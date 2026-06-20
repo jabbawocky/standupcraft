@@ -1,0 +1,21 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      githubToken:
+        type: string
+        description: "GitHub personal access token for fetching GitHub activity (optional — git activity works without it)"
+      reposDir:
+        type: string
+        description: "Directory to scan for git repositories (default: ~)"
+    required: []
+  commandFunction: |-
+    (config) => ({
+      command: "npx",
+      args: ["-y", "github:jabbawocky/standupcraft"],
+      env: {
+        ...(config.githubToken ? { GITHUB_TOKEN: config.githubToken } : {}),
+        ...(config.reposDir ? { REPOS_DIR: config.reposDir } : {})
+      }
+    })
